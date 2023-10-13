@@ -5,13 +5,10 @@ const ask_sdk_1 = require("ask-sdk");
 exports.LaunchRequestHandler = {
     canHandle({ requestEnvelope }) {
         const requestType = (0, ask_sdk_1.getRequestType)(requestEnvelope);
-        return requestType === "LaunchRequest";
+        return requestType === 'LaunchRequest';
     },
     handle({ responseBuilder }) {
-        const speechText = "Welcome to the alexa skill!";
-        return responseBuilder
-            .speak(speechText)
-            .reprompt(speechText)
-            .getResponse();
+        const speechText = 'Welcome to the alexa skill!';
+        return responseBuilder.speak(speechText).reprompt(speechText).getResponse();
     },
 };
