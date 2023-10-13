@@ -11,11 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
 const ask_sdk_core_1 = require("ask-sdk-core");
+const launchRequestHandler_1 = require("./skill/launchRequestHandler");
 let skill;
 const handler = (event, context) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`REQUEST++++${JSON.stringify(event)}`);
     if (!skill) {
-        skill = ask_sdk_core_1.SkillBuilders.custom().addRequestHandlers().create();
+        skill = ask_sdk_core_1.SkillBuilders.custom().addRequestHandlers(launchRequestHandler_1.LaunchRequestHandler).create();
     }
     const response = yield skill.invoke(event, context);
     console.log(`RESPONSE++++${JSON.stringify(response)}`);
