@@ -8,8 +8,8 @@ exports.ErrorsHandler = {
     handle({ responseBuilder }, error) {
         console.log(`Error handled: ${error.message}`);
         return responseBuilder
-            .speak("Sorry, I do not understand your command. Please say it again.")
-            .reprompt("Sorry, I do not understand your command. Please say it again.")
+            .speak('Sorry, I do not understand your command. Please say it again.')
+            .reprompt('Sorry, I do not understand your command. Please say it again.')
             .getResponse();
     },
 };

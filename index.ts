@@ -7,6 +7,7 @@ import { AudioPlayerRequestHandler } from './skill/audioPlayerRequestHandler';
 import { ErrorsHandler } from './skill/errorsHandler';
 import { CharactersIntentHandler } from './skill/charactersIntentHandler';
 import { SessionEndedRequestHandler } from './skill/sessionEndedRequestHandler';
+import { OpeningCrawlIntentHandler } from './skill/openingCrawlIntentHandler';
 
 let skill: Skill;
 
@@ -20,7 +21,8 @@ export const handler = async (event: RequestEnvelope, context: any) => {
         CancelAndStopIntentHandler,
         AudioPlayerRequestHandler,
         SessionEndedRequestHandler,
-        CharactersIntentHandler
+        CharactersIntentHandler,
+        OpeningCrawlIntentHandler
       )
       .addErrorHandlers(ErrorsHandler)
       .create();

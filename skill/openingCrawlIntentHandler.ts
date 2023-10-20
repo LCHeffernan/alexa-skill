@@ -7,12 +7,12 @@ import {
 import { Response } from 'ask-sdk-model';
 import axios, { Axios } from 'axios';
 
-export const CharactersIntentHandler: RequestHandler = {
+export const OpeningCrawlIntentHandler: RequestHandler = {
   canHandle({ requestEnvelope }: HandlerInput): boolean {
     const requestType = getRequestType(requestEnvelope);
     if (requestType === 'IntentRequest') {
       const intentName = getIntentName(requestEnvelope);
-      return intentName === 'CharactersIntent';
+      return intentName === 'OpeningCrawlIntent';
     }
     return false;
   },
@@ -21,8 +21,9 @@ export const CharactersIntentHandler: RequestHandler = {
       baseURL: 'https://swapi.dev/api',
       timeout: 3000,
     });
-    const characterResponse = await starWarsClient.get('/people/1');
-    const speechText = characterResponse.data.name;
+
+    const starWarsResponse = await starWarsClient.get('/films/1');
+    const speechText = starWarsResponse.data.opening_crawl;
 
     return responseBuilder
       .speak(speechText)
