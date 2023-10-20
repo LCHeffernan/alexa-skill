@@ -12,11 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
 const ask_sdk_core_1 = require("ask-sdk-core");
 const launchRequestHandler_1 = require("./skill/launchRequestHandler");
+const helpIntentHandler_1 = require("./skill/helpIntentHandler");
+const cancelAndStopIntentHandler_1 = require("./skill/cancelAndStopIntentHandler");
+const audioPlayerRequestHandler_1 = require("./skill/audioPlayerRequestHandler");
+const errorsHandler_1 = require("./skill/errorsHandler");
 let skill;
 const handler = (event, context) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`REQUEST++++${JSON.stringify(event)}`);
     if (!skill) {
-        skill = ask_sdk_core_1.SkillBuilders.custom().addRequestHandlers(launchRequestHandler_1.LaunchRequestHandler).create();
+        skill = ask_sdk_core_1.SkillBuilders.custom()
+            .addRequestHandlers(launchRequestHandler_1.LaunchRequestHandler, helpIntentHandler_1.HelpIntentHandler, cancelAndStopIntentHandler_1.CancelAndStopIntentHandler, audioPlayerRequestHandler_1.AudioPlayerRequestHandler)
+            .addErrorHandlers(errorsHandler_1.ErrorsHandler)
+            .create();
     }
     const response = yield skill.invoke(event, context);
     console.log(`RESPONSE++++${JSON.stringify(response)}`);
