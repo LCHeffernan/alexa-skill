@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { CharactersIntentHandler } from '../skill/charactersIntentHandler';
+import { OpeningCrawlIntentHandler } from '../skill/openingCrawlIntentHandler';
 
 jest.mock('axios');
 
-describe('charactersIntentHandler', () => {
+describe('openingCrawlIntentHandler', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -16,7 +16,7 @@ describe('charactersIntentHandler', () => {
       request: {
         type: 'IntentRequest',
         intent: {
-          name: 'CharactersIntent',
+          name: 'OpeningCrawlIntent',
         },
       },
     },
@@ -28,19 +28,19 @@ describe('charactersIntentHandler', () => {
   };
 
   it('should be able to handle a request', () => {
-    expect(CharactersIntentHandler.canHandle(handlerInput)).toEqual(true);
+    expect(OpeningCrawlIntentHandler.canHandle(handlerInput)).toEqual(true);
   });
 
   it('should respond with a character name', async () => {
     axios.create.mockReturnThis();
     axios.get.mockResolvedValue({
       data: {
-        name: 'Luke Skywalker',
+        opening_crawl: 'fake text',
       },
     });
-    await CharactersIntentHandler.handle(handlerInput);
+    await OpeningCrawlIntentHandler.handle(handlerInput);
     expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith(
-      'Luke Skywalker'
+      'fake text'
     );
     expect(
       handlerInput.responseBuilder.withShouldEndSession

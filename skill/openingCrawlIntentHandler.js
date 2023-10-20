@@ -9,15 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CharactersIntentHandler = void 0;
+exports.OpeningCrawlIntentHandler = void 0;
 const ask_sdk_1 = require("ask-sdk");
 const axios_1 = require("axios");
-exports.CharactersIntentHandler = {
+exports.OpeningCrawlIntentHandler = {
     canHandle({ requestEnvelope }) {
         const requestType = (0, ask_sdk_1.getRequestType)(requestEnvelope);
         if (requestType === 'IntentRequest') {
             const intentName = (0, ask_sdk_1.getIntentName)(requestEnvelope);
-            return intentName === 'CharactersIntent';
+            return intentName === 'OpeningCrawlIntent';
         }
         return false;
     },
@@ -27,8 +27,8 @@ exports.CharactersIntentHandler = {
                 baseURL: 'https://swapi.dev/api',
                 timeout: 3000,
             });
-            const characterResponse = yield starWarsClient.get('/people/1');
-            const speechText = characterResponse.data.name;
+            const starWarsResponse = yield starWarsClient.get('/films/1');
+            const speechText = starWarsResponse.data.opening_crawl;
             return responseBuilder
                 .speak(speechText)
                 .withShouldEndSession(false)

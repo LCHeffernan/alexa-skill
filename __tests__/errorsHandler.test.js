@@ -13,7 +13,7 @@ describe('errorsHandler', () => {
     },
   };
 
-  const error = { message: 'fake message'};
+  const error = { message: 'fake message' };
 
   it('should be able to handle a request', () => {
     expect(ErrorsHandler.canHandle(handlerInput)).toEqual(true);
@@ -21,7 +21,11 @@ describe('errorsHandler', () => {
 
   it('should respond with an error message', () => {
     ErrorsHandler.handle(handlerInput, error);
-    expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith('Sorry, I do not understand your command. Please say it again.');
-    expect(handlerInput.responseBuilder.reprompt).toHaveBeenCalledWith('Sorry, I do not understand your command. Please say it again.');
+    expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith(
+      'Sorry, I do not understand your command. Please say it again.'
+    );
+    expect(handlerInput.responseBuilder.reprompt).toHaveBeenCalledWith(
+      'Sorry, I do not understand your command. Please say it again.'
+    );
   });
 });

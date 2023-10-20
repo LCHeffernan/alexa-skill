@@ -24,7 +24,11 @@ describe('launchRequestHandler', () => {
 
   it('should respond with a launch message', () => {
     LaunchRequestHandler.handle(handlerInput);
-    expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith('Welcome to the alexa skill!');
-    expect(handlerInput.responseBuilder.reprompt).toHaveBeenCalledWith('Welcome to the alexa skill!');
+    expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith(
+      'Welcome to the Star Wars fan skill!'
+    );
+    expect(handlerInput.responseBuilder.reprompt).toHaveBeenCalledWith(
+      'Welcome to the Star Wars fan skill!'
+    );
   });
 });

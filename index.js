@@ -18,12 +18,13 @@ const audioPlayerRequestHandler_1 = require("./skill/audioPlayerRequestHandler")
 const errorsHandler_1 = require("./skill/errorsHandler");
 const charactersIntentHandler_1 = require("./skill/charactersIntentHandler");
 const sessionEndedRequestHandler_1 = require("./skill/sessionEndedRequestHandler");
+const openingCrawlIntentHandler_1 = require("./skill/openingCrawlIntentHandler");
 let skill;
 const handler = (event, context) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`REQUEST++++${JSON.stringify(event)}`);
     if (!skill) {
         skill = ask_sdk_core_1.SkillBuilders.custom()
-            .addRequestHandlers(launchRequestHandler_1.LaunchRequestHandler, helpIntentHandler_1.HelpIntentHandler, cancelAndStopIntentHandler_1.CancelAndStopIntentHandler, audioPlayerRequestHandler_1.AudioPlayerRequestHandler, sessionEndedRequestHandler_1.SessionEndedRequestHandler, charactersIntentHandler_1.CharactersIntentHandler)
+            .addRequestHandlers(launchRequestHandler_1.LaunchRequestHandler, helpIntentHandler_1.HelpIntentHandler, cancelAndStopIntentHandler_1.CancelAndStopIntentHandler, audioPlayerRequestHandler_1.AudioPlayerRequestHandler, sessionEndedRequestHandler_1.SessionEndedRequestHandler, charactersIntentHandler_1.CharactersIntentHandler, openingCrawlIntentHandler_1.OpeningCrawlIntentHandler)
             .addErrorHandlers(errorsHandler_1.ErrorsHandler)
             .create();
     }
