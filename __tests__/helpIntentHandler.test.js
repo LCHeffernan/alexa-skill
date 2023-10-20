@@ -27,7 +27,7 @@ describe('helpIntentHandler', () => {
 
   it('should respond with a help message', () => {
     HelpIntentHandler.handle(handlerInput);
-    expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith('You can ask the skill!');
-    expect(handlerInput.responseBuilder.reprompt).toHaveBeenCalledWith('You can ask the skill!');
+    expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith('You can ask about Star Wars!');
+    expect(handlerInput.responseBuilder.reprompt).toHaveBeenCalledWith('You can ask about Star Wars!');
   });
 });

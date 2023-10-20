@@ -8,7 +8,7 @@ exports.LaunchRequestHandler = {
         return requestType === 'LaunchRequest';
     },
     handle({ responseBuilder }) {
-        const speechText = 'Welcome to the alexa skill!';
+        const speechText = 'Welcome to the Star Wars fan skill!';
         return responseBuilder.speak(speechText).reprompt(speechText).getResponse();
     },
 };

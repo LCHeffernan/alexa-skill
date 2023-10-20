@@ -11,7 +11,7 @@ export const HelpIntentHandler: RequestHandler = {
       return false;
     },
     handle({ responseBuilder }: HandlerInput): Response {
-      const speechText = "You can ask the skill!";
+      const speechText = "You can ask about Star Wars!";
   
       return responseBuilder
         .speak(speechText)

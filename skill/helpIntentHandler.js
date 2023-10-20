@@ -12,7 +12,7 @@ exports.HelpIntentHandler = {
         return false;
     },
     handle({ responseBuilder }) {
-        const speechText = "You can ask the skill!";
+        const speechText = "You can ask about Star Wars!";
         return responseBuilder
             .speak(speechText)
             .reprompt(speechText)

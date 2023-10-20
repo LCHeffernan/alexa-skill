@@ -7,7 +7,7 @@ export const LaunchRequestHandler: RequestHandler = {
     return requestType === 'LaunchRequest';
   },
   handle({ responseBuilder }: HandlerInput): Response | Promise<Response> {
-    const speechText = 'Welcome to the alexa skill!';
+    const speechText = 'Welcome to the Star Wars fan skill!';
 
     return responseBuilder.speak(speechText).reprompt(speechText).getResponse();
   },
