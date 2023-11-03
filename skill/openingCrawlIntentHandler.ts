@@ -5,7 +5,7 @@ import {
   getRequestType,
 } from 'ask-sdk';
 import { Response } from 'ask-sdk-model';
-import axios, { Axios } from 'axios';
+import { starWarsClient } from './lib/starWarsClient';
 
 export const OpeningCrawlIntentHandler: RequestHandler = {
   canHandle({ requestEnvelope }: HandlerInput): boolean {
@@ -17,12 +17,8 @@ export const OpeningCrawlIntentHandler: RequestHandler = {
     return false;
   },
   async handle({ responseBuilder }: HandlerInput): Promise<Response> {
-    const starWarsClient: Axios = axios.create({
-      baseURL: 'https://swapi.dev/api',
-      timeout: 3000,
-    });
 
-    const starWarsResponse = await starWarsClient.get('/films/1');
+    const starWarsResponse = await starWarsClient().get('/films/1');
     const speechText = starWarsResponse.data.opening_crawl;
 
     return responseBuilder

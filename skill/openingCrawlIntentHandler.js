@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OpeningCrawlIntentHandler = void 0;
 const ask_sdk_1 = require("ask-sdk");
-const axios_1 = require("axios");
+const starWarsClient_1 = require("./lib/starWarsClient");
 exports.OpeningCrawlIntentHandler = {
     canHandle({ requestEnvelope }) {
         const requestType = (0, ask_sdk_1.getRequestType)(requestEnvelope);
@@ -23,11 +23,7 @@ exports.OpeningCrawlIntentHandler = {
     },
     handle({ responseBuilder }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const starWarsClient = axios_1.default.create({
-                baseURL: 'https://swapi.dev/api',
-                timeout: 3000,
-            });
-            const starWarsResponse = yield starWarsClient.get('/films/1');
+            const starWarsResponse = yield (0, starWarsClient_1.starWarsClient)().get('/films/1');
             const speechText = starWarsResponse.data.opening_crawl;
             return responseBuilder
                 .speak(speechText)

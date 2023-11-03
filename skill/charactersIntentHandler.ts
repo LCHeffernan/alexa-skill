@@ -5,7 +5,7 @@ import {
   getRequestType,
 } from 'ask-sdk';
 import { Response } from 'ask-sdk-model';
-import { createStarWarsClient } from './lib/starWarsClient';
+import { starWarsClient } from './lib/starWarsClient';
 
 export const CharactersIntentHandler: RequestHandler = {
   canHandle({ requestEnvelope }: HandlerInput): boolean {
@@ -17,8 +17,7 @@ export const CharactersIntentHandler: RequestHandler = {
     return false;
   },
   async handle({ responseBuilder }: HandlerInput): Promise<Response> {
-    // const starWarsClient = createStarWarsClient()
-    const characterResponse = await createStarWarsClient().get('/people/1');
+    const characterResponse = await starWarsClient().get('/people/1');
     const speechText = characterResponse.data.name;
 
     return responseBuilder
