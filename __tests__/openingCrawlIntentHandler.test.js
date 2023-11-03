@@ -10,6 +10,8 @@ describe('openingCrawlIntentHandler', () => {
   const speakMock = jest.fn(() => handlerInput.responseBuilder);
   const withShouldEndSessionMock = jest.fn(() => handlerInput.responseBuilder);
   const getResponseMock = jest.fn(() => handlerInput.responseBuilder);
+  const getSessionAttributesMock = jest.fn(() => {return {}})
+  const setSessionAttributesMock = jest.fn(() => {return { episodeId: 99 }})
 
   const handlerInput = {
     requestEnvelope: {
@@ -25,6 +27,10 @@ describe('openingCrawlIntentHandler', () => {
       withShouldEndSession: withShouldEndSessionMock,
       getResponse: getResponseMock,
     },
+    attributesManager: {
+      getSessionAttributes: getSessionAttributesMock,
+      setSessionAttributes: setSessionAttributesMock,
+    },
   };
 
   it('should be able to handle a request', () => {
@@ -36,11 +42,13 @@ describe('openingCrawlIntentHandler', () => {
     axios.get.mockResolvedValue({
       data: {
         opening_crawl: 'fake text',
+        episode_id: '99',
+        title: 'episode title',
       },
     });
     await OpeningCrawlIntentHandler.handle(handlerInput);
     expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith(
-      'fake text'
+      'Episode 99 episode title fake text'
     );
     expect(
       handlerInput.responseBuilder.withShouldEndSession

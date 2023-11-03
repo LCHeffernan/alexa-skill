@@ -21,12 +21,17 @@ exports.OpeningCrawlIntentHandler = {
         }
         return false;
     },
-    handle({ responseBuilder }) {
+    handle({ responseBuilder, attributesManager }) {
         return __awaiter(this, void 0, void 0, function* () {
             const starWarsResponse = yield (0, starWarsClient_1.starWarsClient)().get('/films/1');
             const speechText = starWarsResponse.data.opening_crawl;
+            const episodeId = starWarsResponse.data.episode_id;
+            const episodeTitle = starWarsResponse.data.title;
+            const sessionAttributes = yield attributesManager.getSessionAttributes();
+            sessionAttributes.episodeId = episodeId;
+            attributesManager.setSessionAttributes(sessionAttributes);
             return responseBuilder
-                .speak(speechText)
+                .speak(`Episode ${episodeId} ${episodeTitle} ${speechText}`)
                 .withShouldEndSession(false)
                 .getResponse();
         });

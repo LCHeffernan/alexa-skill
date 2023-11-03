@@ -16,13 +16,19 @@ export const OpeningCrawlIntentHandler: RequestHandler = {
     }
     return false;
   },
-  async handle({ responseBuilder }: HandlerInput): Promise<Response> {
+  async handle({ responseBuilder, attributesManager }: HandlerInput): Promise<Response> {
 
     const starWarsResponse = await starWarsClient().get('/films/1');
     const speechText = starWarsResponse.data.opening_crawl;
+    const episodeId = starWarsResponse.data.episode_id;
+    const episodeTitle = starWarsResponse.data.title;
+    
+    const sessionAttributes = await attributesManager.getSessionAttributes();
+    sessionAttributes.episodeId = episodeId;
+    attributesManager.setSessionAttributes(sessionAttributes);
 
     return responseBuilder
-      .speak(speechText)
+      .speak(`Episode ${episodeId} ${episodeTitle} ${speechText}`)
       .withShouldEndSession(false)
       .getResponse();
   },
