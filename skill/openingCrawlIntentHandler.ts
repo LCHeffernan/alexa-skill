@@ -20,15 +20,15 @@ export const OpeningCrawlIntentHandler: RequestHandler = {
 
     const starWarsResponse = await starWarsClient().get('/films/1');
     const speechText = starWarsResponse.data.opening_crawl;
-    const episodeId = starWarsResponse.data.episode_id;
+    const episodeNumber = starWarsResponse.data.episode_id;
     const episodeTitle = starWarsResponse.data.title;
     
     const sessionAttributes = await attributesManager.getSessionAttributes();
-    sessionAttributes.episodeId = episodeId;
+    sessionAttributes.episodeNumber = episodeNumber;
     attributesManager.setSessionAttributes(sessionAttributes);
 
     return responseBuilder
-      .speak(`Episode ${episodeId} ${episodeTitle} ${speechText}`)
+      .speak(`Episode ${episodeNumber}. ${episodeTitle}. ${speechText}`)
       .withShouldEndSession(false)
       .getResponse();
   },

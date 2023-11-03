@@ -1,24 +1,24 @@
 import axios from 'axios';
-import { OpeningCrawlIntentHandler } from '../skill/openingCrawlIntentHandler';
+import { NextIntentHandler } from '../skill/nextIntentHandler';
 
 jest.mock('axios');
 
-describe('openingCrawlIntentHandler', () => {
+describe('nextIntentHandler', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
   const speakMock = jest.fn(() => handlerInput.responseBuilder);
   const withShouldEndSessionMock = jest.fn(() => handlerInput.responseBuilder);
   const getResponseMock = jest.fn(() => handlerInput.responseBuilder);
-  const getSessionAttributesMock = jest.fn(() => {return {}})
-  const setSessionAttributesMock = jest.fn(() => {return { episodeNumber: 99 }})
+    const getSessionAttributesMock = jest.fn(() => {return { episodeNumber: 4 }})
+    const setSessionAttributesMock = jest.fn(() => {return { episodeNumber: 99 }})
 
   const handlerInput = {
     requestEnvelope: {
       request: {
         type: 'IntentRequest',
         intent: {
-          name: 'OpeningCrawlIntent',
+          name: 'AMAZON.NextIntent',
         },
       },
     },
@@ -34,24 +34,28 @@ describe('openingCrawlIntentHandler', () => {
   };
 
   it('should be able to handle a request', () => {
-    expect(OpeningCrawlIntentHandler.canHandle(handlerInput)).toEqual(true);
+    expect(NextIntentHandler.canHandle(handlerInput)).toEqual(true);
   });
 
-  it('should respond with a character name', async () => {
+  it('should return the opening crawl from the next episode', async () => {
     axios.create.mockReturnThis();
     axios.get.mockResolvedValue({
       data: {
-        opening_crawl: 'fake text',
-        episode_id: '99',
-        title: 'episode title',
+        opening_crawl: 'next episode text',
+        episode_id: '100',
+        title: 'next episode title',
       },
     });
-    await OpeningCrawlIntentHandler.handle(handlerInput);
-    expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith(
-      'Episode 99. episode title. fake text'
-    );
+    await NextIntentHandler.handle(handlerInput);
+
+    expect(handlerInput.responseBuilder.getResponse).toHaveBeenCalled();
+    expect(handlerInput.responseBuilder.getResponse).toHaveBeenCalledTimes(1);
     expect(
       handlerInput.responseBuilder.withShouldEndSession
     ).toHaveBeenCalledWith(false);
+    expect(handlerInput.attributesManager.getSessionAttributes).toHaveBeenCalled();
+    expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith(
+      'Episode 100. next episode title. next episode text'
+    );
   });
 });
