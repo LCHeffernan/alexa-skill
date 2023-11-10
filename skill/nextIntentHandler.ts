@@ -22,6 +22,7 @@ export const NextIntentHandler: RequestHandler = {
   }: HandlerInput): Promise<Response> {
     const sessionAttributes = await attributesManager.getSessionAttributes();
     const currentEpisodeNumber = sessionAttributes.episodeNumber;
+
     let nextEpisodeParameterId;
     if (!currentEpisodeNumber) {
       return responseBuilder
@@ -39,7 +40,6 @@ export const NextIntentHandler: RequestHandler = {
         .withShouldEndSession(false)
         .getResponse();
     }
-    console.log(nextEpisodeParameterId);
 
     const starWarsResponse = await starWarsClient().get(
       `/films/${nextEpisodeParameterId}`
