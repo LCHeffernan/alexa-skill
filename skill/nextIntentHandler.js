@@ -44,7 +44,6 @@ exports.NextIntentHandler = {
                     .withShouldEndSession(false)
                     .getResponse();
             }
-            console.log(nextEpisodeParameterId);
             const starWarsResponse = yield (0, starWarsClient_1.starWarsClient)().get(`/films/${nextEpisodeParameterId}`);
             const speechText = starWarsResponse.data.opening_crawl;
             const episodeNumber = starWarsResponse.data.episode_id;
