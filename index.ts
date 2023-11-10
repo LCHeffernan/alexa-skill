@@ -9,6 +9,7 @@ import { CharactersIntentHandler } from './skill/charactersIntentHandler';
 import { SessionEndedRequestHandler } from './skill/sessionEndedRequestHandler';
 import { OpeningCrawlIntentHandler } from './skill/openingCrawlIntentHandler';
 import { NextIntentHandler } from './skill/nextIntentHandler';
+import { previousIntentHandler } from './skill/previousIntentHandler';
 
 let skill: Skill;
 
@@ -24,7 +25,8 @@ export const handler = async (event: RequestEnvelope, context: any) => {
         SessionEndedRequestHandler,
         CharactersIntentHandler,
         OpeningCrawlIntentHandler,
-        NextIntentHandler
+        NextIntentHandler,
+        previousIntentHandler
       )
       .addErrorHandlers(ErrorsHandler)
       .create();
