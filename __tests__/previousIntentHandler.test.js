@@ -1,26 +1,27 @@
 import axios from 'axios';
-import { NextIntentHandler } from '../skill/nextIntentHandler';
+import { previousIntentHandler } from '../skill/previousIntentHandler';
 
 jest.mock('axios');
 
-describe('nextIntentHandler', () => {
+describe('previousIntentHandler', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
   const speakMock = jest.fn(() => handlerInput.responseBuilder);
   const withShouldEndSessionMock = jest.fn(() => handlerInput.responseBuilder);
   const getResponseMock = jest.fn(() => handlerInput.responseBuilder);
+
   const getSessionAttributesMock = jest
     .fn()
+    .mockImplementationOnce(() => {
+      return { episodeNumber: 5 };
+    })
     .mockImplementationOnce(() => {
       return { episodeNumber: 4 };
     })
     .mockImplementationOnce(() => {
-      return { episodeNumber: 3 };
-    })
-    .mockImplementationOnce(() => {
-      return { episodeNumber: undefined };
-    });
+        return { episodeNumber: undefined };
+      });
   const setSessionAttributesMock = jest.fn(() => {
     return { episodeNumber: 99 };
   });
@@ -30,7 +31,7 @@ describe('nextIntentHandler', () => {
       request: {
         type: 'IntentRequest',
         intent: {
-          name: 'AMAZON.NextIntent',
+          name: 'AMAZON.PreviousIntent',
         },
       },
     },
@@ -45,20 +46,22 @@ describe('nextIntentHandler', () => {
     },
   };
 
+jest.spyOn(handlerInput.attributesManager, 'setSessionAttributes')
+
   it('should be able to handle a request', () => {
-    expect(NextIntentHandler.canHandle(handlerInput)).toEqual(true);
+    expect(previousIntentHandler.canHandle(handlerInput)).toEqual(true);
   });
 
-  it('should return the opening crawl from the next episode', async () => {
+  it('should return the opening crawl from the previous episode', async () => {
     axios.create.mockReturnThis();
     axios.get.mockResolvedValue({
       data: {
-        opening_crawl: 'next episode text',
-        episode_id: '100',
-        title: 'next episode title',
+        opening_crawl: 'previous episode text',
+        episode_id: 1,
+        title: 'previous episode title',
       },
     });
-    await NextIntentHandler.handle(handlerInput);
+    await previousIntentHandler.handle(handlerInput);
 
     expect(handlerInput.responseBuilder.getResponse).toHaveBeenCalled();
     expect(handlerInput.responseBuilder.getResponse).toHaveBeenCalledTimes(1);
@@ -68,24 +71,27 @@ describe('nextIntentHandler', () => {
     expect(
       handlerInput.attributesManager.getSessionAttributes
     ).toHaveBeenCalled();
+    expect(
+        handlerInput.attributesManager.setSessionAttributes
+      ).toHaveBeenCalledWith({ episodeNumber: 1});
     expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith(
-      'Episode 100. next episode title. next episode text'
+      'Episode 1. previous episode title. previous episode text'
     );
   });
 
-  it('should return a no next episodes message if it is the last episode', async () => {
-    await NextIntentHandler.handle(handlerInput);
+  it('should return a no previous episodes message if it is the first episode', async () => {
+    await previousIntentHandler.handle(handlerInput);
 
     expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith(
-      'There are no more episodes.'
+      'There are no previous episodes.'
     );
   });
 
   it('should return a message if no episode is currently playing', async () => {
-    await NextIntentHandler.handle(handlerInput);
+    await previousIntentHandler.handle(handlerInput);
 
     expect(handlerInput.responseBuilder.speak).toHaveBeenCalledWith(
-      'You need to play an episode to enable the next function.'
+      'You need to play an episode to enable the previous function.'
     );
   });
 });
